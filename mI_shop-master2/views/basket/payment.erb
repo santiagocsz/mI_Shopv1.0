@@ -1,0 +1,26 @@
+<h3>PAYMENT</h3>
+<div class="row marketing">
+  <div class="col-lg-6">
+    <% @basket.each do |product| %>
+    <h4><p>Name: <%= product.name %></p></h4>
+    <p>Price: <%= product.price %></p>
+    <p>Units: <%= product.quantity %></p>
+    <% end %>
+  </div>
+</div>
+
+<h4><center>Total: <%= @sum_gross %></center></h4>
+
+<form action="/charge" method="post" class="payment">
+    <article>
+      <label class="amount">
+        <span>Amount: <%= @sum_gross %></span>
+      </label>
+    </article>
+
+    <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+            data-key="<%= "pk_test_50V1BxDWvtIKKYjf6N034Sen"  %>"
+            data-description="A month's subscription"
+            data-amount=<%= @totalcents %>
+            data-locale="auto"></script>
+  </form>

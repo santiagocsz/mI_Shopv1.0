@@ -1,0 +1,12 @@
+<h3>PRODUCTS LIST</h3>
+<div class="row marketing">
+  <div class="col-lg-6">
+    <% @products. each do |element|%>
+      <h4><%= element.name %></h4>
+      <p>Description: <%= element.description %><p>
+      	<p>Price: <%= element.price %><p>
+      		<p>Quantity: <%= element.quantity %><p>
+      <p><a href="/product/<%= element.id%>">See more</a></p></br>
+    <% end %>
+  </div>
+</div>

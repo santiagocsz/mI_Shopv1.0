@@ -1,0 +1,43 @@
+<head>
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
+</head>
+<body>
+  
+<table>
+  <thead>
+    <tr>
+      <th scope = "col" >item</th>
+      <th scope = "col" >description</th> 
+      <th scope = "col" >quantity</th>
+      <th scope = "col" >price</th>
+    </tr>
+</thead>
+ <tbody>
+
+    <% Item.each do|i| %> 
+    <tr>
+      <td><%= i.name%></td>
+      <td><%= i.description%></td> 
+      <td><%= i.quantity%></td>
+      <td><%= i.price%></td>
+    <%end%>
+ </tbody> 
+
+</table>
+
