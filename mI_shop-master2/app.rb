@@ -54,8 +54,6 @@ end
 
 end
 
-
-
 get '/basket/payment' do
       @basket = Basket.all
       product = Basket.get(params[:id].to_i)
@@ -202,6 +200,9 @@ get'/products/index' do
     erb :"products/index"
 end
 
+error Stripe::CardError do
+  env['sinatra.error'].message
+end
 
 
   patch "/quantity" do
