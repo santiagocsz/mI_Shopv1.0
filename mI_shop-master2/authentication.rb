@@ -87,3 +87,10 @@ def administrator
 		return nil
 	end
 end
+
+def admin_only!
+
+	if !administrator
+		redirect "/"
+	end
+end

@@ -23,10 +23,6 @@ if User.all(administrator: true).count == 0
   u.save
 end
 
-get '/basket' do
-    @basket = Basket.all
-    erb :"basket/index"
-end
 
 get "/" do
 	erb :index
@@ -42,10 +38,12 @@ get "/Shop_name" do
 end
 
 get '/new_item' do
+  admin_only!
 	erb :new_item
 end
 
  post '/new_item' do
+  admin_only!
 	i = Item.new
 	i.name = params["name"]
 	i.description = params["description"]
@@ -55,6 +53,8 @@ end
 	redirect "/item_list"
 
 end
+
+
 
 get '/basket/payment' do
       @basket = Basket.all
@@ -126,111 +126,76 @@ post '/basket' do
 end
 
 
+
+
+
+get "/item_list" do
+  admin_only!
+	@Items = Item.all
+	#erb :item_list# orginal
+	# the following is a table to display items
+	erb :item_display_table
+
+end
+
+
+
+get '/product/:id' do
+      i = Item.get(params[:id].to_i)
+      if i 
+        @product = Item.get(params[:id].to_i)
+        erb :"products/show"
+      else
+        status 404
+        erb :"error/404"
+      end
+end
+
 post '/basket/delete/:id' do
       quantity = Basket.get(params[:id].to_i)
       if quantity
         o = quantity.product_id
         k = quantity.quantity
         realitem = Item.get(o)
+
+        if realitem
         realitem.quantity += k
         realitem.save
         quantity.destroy
 
         redirect '/basket'
+        else
+        quantity.destroy
+        status 404
+        erb :"error/404"
+      end
       else
         status 404
         erb :"error/404"
       end
     end
 
-
-
-
-get "/item_list" do
-	@Items = Item.all
-	#erb :item_list# orginal
-	# the following is a table to display items
-	erb :item_display_table
-
+get '/basket' do
+    authenticate!
+    @basket = Basket.all
+    erb :"basket/index"
 end
 
 
-get "/delete item" do
-		i = Item.get(params["name"])
-		if i != nil
+post "/item_list/delete/:id" do
+    admin_only!
+		i = Item.get(params[:id].to_i)
+		if i 
 			i.destroy
-			x = i.quantity.to_i
-			x-1
-			i.quantity = x
-		end
-end
 
+      redirect '/item_list'
+	
 
-  patch "/quantity" do
-		i.quantity = params ["quantity"]
-
+    else
+    status 404
+    erb :"error/404"
   end
-
-require "sinatra"
-require_relative "authentication.rb"
-
-#the following urls are included in authentication.rb
-# GET /login
-# GET /logout
-# GET /sign_up
-
-# authenticate! will make sure that the user is signed in, if they are not they will be redirected to the login page
-# if the user is signed in, current_user will refer to the signed in user object.
-# if they are not signed in, current_user will be nil
-
-get "/" do
-	erb :index
 end
-
-get "/dashboard" do
-	authenticate!
-	erb :dashboard
-end
-
-get "/Shop_name" do
-	erb :layout 
-end
-
-get '/new_item' do
-	erb :new_item
-end
-
- post '/new_item' do
-	i = Item.new
-	i.name = params["name"]
-	i.description = params["description"]
-	i.quantity = params["quantity"].to_i
-	i.price = params["price"].to_i
-	i.save
-	redirect "/item_list"
-
-end
-
-
-
-get "/item_list" do
-	@Items = Item.all
-	#erb :item_list# orginal
-	# the following is a table to display items
-	erb :item_display_table
-
-end
-
-get '/product/:id' do
-      i = Item.get(params[:id].to_i)
-      if i 
-      	@product = Item.get(params[:id].to_i)
-        erb :"products/show"
-      else
-        status 404
-        erb :"error/404"
-      end
-    end
 
 get'/products/index' do
     @products = Item.all
@@ -238,24 +203,9 @@ get'/products/index' do
 end
 
 
-get "/delete_item" do
-		i = Item.get(params["name"])
-		if i != nil
-			i.destroy
-			x = i.quantity.to_i
-			x-1
-			i.quantity = x
-		end
-end
-
 
   patch "/quantity" do
 		i.quantity = params ["quantity"]
 
   end
 
-
-
-# hash array to keep track of shoppers cart
-# button to pay
-# send email to owner at time of purchase
