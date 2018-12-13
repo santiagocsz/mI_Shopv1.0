@@ -22,10 +22,11 @@ tr:nth-child(even) {
 <table>
   <thead>
     <tr>
-      <th scope = "col" >item</th>
-      <th scope = "col" >description</th> 
-      <th scope = "col" >quantity</th>
-      <th scope = "col" >price</th>
+      <th scope = "col" >Item</th>
+      <th scope = "col" >Description</th> 
+      <th scope = "col" >Quantity</th>
+      <th scope = "col" >Price</th>
+      <th scope = "col" >Delete</th>
     </tr>
 </thead>
  <tbody>
@@ -36,7 +37,14 @@ tr:nth-child(even) {
       <td><%= i.description%></td> 
       <td><%= i.quantity%></td>
       <td><%= i.price%></td>
+      <td><form action="/item_list/delete/<%= i.id %>" method="post">
+      <input type="hidden" name="product_id" value=<%= i.id %>>
+      <input type="submit" class="btn btn-danger btn-xs" value="Delete from items">
+    </form></td>
     <%end%>
+
+  </div>
+</div>
  </tbody> 
 
 </table>

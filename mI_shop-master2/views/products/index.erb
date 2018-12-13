@@ -1,6 +1,8 @@
-<h3>PRODUCTS LIST</h3>
-<div class="row marketing">
-  <div class="col-lg-6">
+<div class="container">
+	<h1>PRODUCTS LIST</h1>
+</div>
+<div class="jumbotron">
+  <div class="container text-center">
     <% @products. each do |element|%>
       <h4><%= element.name %></h4>
       <p>Description: <%= element.description %><p>
