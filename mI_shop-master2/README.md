@@ -12,6 +12,9 @@
 ### mI_Shop
 
 It's a shop where an admin can add or delete items and Users can buy from it.
+Use account: admin@admin.com
+   password: admin
+to gain access to administrator privileges to add or delete items from the store
 
 
 
